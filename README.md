@@ -1,2 +1,3 @@
-# beginning-of-my-journey
+# Beginning-of-my-journey
 This is my first git Repository
+Author = Deepak Bishnoi
