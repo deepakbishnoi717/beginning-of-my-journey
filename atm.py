@@ -1,10 +1,8 @@
 import json
-import os
-import os         
-FILE = "account.json"
+import os      
 
-def load_Account():
-    if not os.path.exists(FILE):
+def load_account():
+    if not os.path.exists("account.json"):
         raise FileNotFoundError("account.json not found. Please create it first.")
     
     with open("account.json", "r") as file :
@@ -15,9 +13,13 @@ def save_account(account):
         json.dump(account,f,indent=4)
 
 #############  ATM METHODS ##############
-def secority():
-    account = load_Account()
-    p = int(input("Enter the pin :"))
+def security():
+    account = load_account()
+    try :
+       p = int(input("Enter the pin :"))
+    except ValueError :
+        print("Invalid input! Please enter a number.")
+        return False
     if int(account["pin"]) == p :
         return True
     
@@ -25,14 +27,14 @@ def secority():
     return False
 
 def deposit():
-    account = load_Account()
+    account = load_account()
     amount = int(input("Enter amount for deposit :"))
     account["balance"] += amount
     save_account(account)
-    print(f"{amount} is deposited in your account {account['account']}" )
+    print(f"{amount} Rs is deposited in your account {account['account']}" )
 
 def withdraw():
-    account = load_Account()
+    account = load_account()
     amount = int(input("Enter the amount for withraw :"))
     if amount > account["balance"] :
         print("insufficent balance !")
@@ -40,16 +42,16 @@ def withdraw():
     
     account["balance"] -= amount 
     save_account(account)
-    print(f"{amount} is dabited from your account {account['account']}")
+    print(f"{amount} Rs is dabited from your account {account['account']}")
 
-def check_balence():
-    account = load_Account()
-    print(f"Avilable Balance :{account['balance']}")
+def check_balance():
+    account = load_account()
+    print(f"Avilable Balance :Rs {account['balance']}")
 
 #################### MAIN CLASS ##################
 
 def main():
-    if not secority():
+    if not security():
         return
     
     while True :
@@ -59,15 +61,20 @@ def main():
         print("press 3 for check balance.")
         print("press 4 for exit.")
         
-        choice = int(input("Enter your choice :"))
+        try :
+           choice = int(input("Enter your choice :"))
+        except ValueError:
+            print("Invalid input! Please enter a number.")
+            continue
+
         if choice == 1 :
             deposit()
         elif choice == 2 :
             withdraw()
         elif choice == 3 :
-            check_balence()
+            check_balance()
         elif choice == 4 :
-            print("Thanku for using my atm!")
+            print("Thank you for using my Atm!")
             break 
         else :
             print("invalid input !")
